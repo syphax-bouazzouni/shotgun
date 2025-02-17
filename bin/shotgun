@@ -105,11 +105,12 @@ ENV['BROWSER'] ||=
 ENV['RACK_ENV'] = env
 
 require 'rack'
+require 'rackup'
 
 require 'shotgun'
 
 require 'thin' if server.to_s.downcase == 'thin'
-server = Rack::Handler.get(server) || Rack::Handler.default
+server = Rackup::Handler.get(server) || Rackup::Handler.default
 
 app =
   Rack::Builder.new do
@@ -153,7 +154,7 @@ Shotgun.preload
 
 base_url = "http://#{options[:Host]}:#{options[:Port]}#{mount_path}"
 puts "== Shotgun/#{server.to_s.sub(/Rack::Handler::/, '')} on #{base_url}"
-server.run app, options do |inst|
+server.run app, **options do |inst|
   if browse
     if ENV['BROWSER']
       system "#{ENV['BROWSER']} '#{base_url}'"

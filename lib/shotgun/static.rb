@@ -1,10 +1,10 @@
-require 'rack/file'
+require 'rack/files'
 
 module Shotgun
   # Serves static files out of the specified directory.
   class Static
     def initialize(app, public_dir='./public')
-      @file = Rack::File.new(public_dir)
+      @file = Rack::Files.new(public_dir)
       @app = app
     end
 
